@@ -3,13 +3,12 @@
 
 int main()
 {
-    Array<int> x;
-    for(int i = 0; i < 110; ++i)
-        x.push_back(i);
+    Array<int> x((std::istream_iterator<int>(std::cin)), (std::istream_iterator<int>()));
     x.print_all(1);
-    x.insert(98, 1024);
-    x.print_all(1);
-    x.compress();
-    x.print_all(1);
+
+    for(auto iter = x.rbegin(); iter!= x.rend(); ++iter)
+    {
+        std::cout << *iter << std::endl;
+    }
     return 0;
 }

@@ -16,8 +16,8 @@ Array<T>::BlockList::~BlockList()
 }
 
 template <typename T>
-Array<T>::BlockList::BlockList(size_t n_capacity,
-        size_t n_block_capacity)
+Array<T>::BlockList::BlockList(const size_t &n_capacity,
+        const size_t &n_block_capacity)
 {
     m_table_size = 1;
     m_size = 0;
@@ -80,7 +80,7 @@ typename Array<T>::BlockList &Array<T>::BlockList::operator=(BlockList &&other)
 }
 
 template <typename T>
-int Array<T>::BlockList::push_back(T new_data)
+int Array<T>::BlockList::push_back(const T &new_data)
 {
     ++m_size;
     if(m_table[m_table_size - 1]->empty())
@@ -124,7 +124,20 @@ int Array<T>::BlockList::push_back(T new_data)
 }
 
 template <typename T>
-T &Array<T>::BlockList::operator[](size_t n)
+T &Array<T>::BlockList::operator[](const size_t &n)
+{
+    assert(n <= size());
+    int i = 0;
+    while(n >= m_table[i]->size())
+    {
+        n -= m_table[i]->size();
+        ++i;
+    }
+    return (*m_table[i])[n];
+}
+
+template <typename T>
+T Array<T>::BlockList::operator[](const size_t &n) const
 {
     assert(n <= size());
     int i = 0;
@@ -183,7 +196,7 @@ int Array<T>::BlockList::pop_back()
 }
 
 template <typename T>
-int Array<T>::BlockList::insert(size_t N, T new_data)
+int Array<T>::BlockList::insert(const size_t &N, const T &new_data)
 {
     ++m_size;
     int i = 0;
@@ -212,7 +225,7 @@ int Array<T>::BlockList::insert(size_t N, T new_data)
 }
 
 template <typename T>
-int Array<T>::BlockList::erase(size_t N)
+int Array<T>::BlockList::erase(const size_t &N)
 {
     --m_size;
     int i = 0;
@@ -235,19 +248,6 @@ int Array<T>::BlockList::erase(size_t N)
         --m_table_size;
         return TABLE_CHANGED;
     }
-}
-
-template <typename T>
-T Array<T>::BlockList::get(size_t N) const
-{
-    assert(N <= size());
-    int i = 0;
-    while(N >= m_table[i]->size())
-    {
-        N -= m_table[i]->size();
-        ++i;
-    }
-    return m_table[i]->get(N);
 }
 
 #endif

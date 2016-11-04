@@ -4,13 +4,13 @@
 #include "array.h"
 
 template <typename T>
-int Array<T>::push_back(T new_data)
+int Array<T>::push_back(const T &new_data)
 {
     return m_forward_list.push_back(new_data);
 }
 
 template <typename T>
-Array<T>::Array(size_t n_size, T *n_data)
+Array<T>::Array(const size_t &n_size, const T *n_data)
 {
     for(int i = 0; i < n_size; ++i)
     {
@@ -19,7 +19,7 @@ Array<T>::Array(size_t n_size, T *n_data)
 }
 
 template <typename T>
-Array<T>::Array(size_t n_block_capacity, size_t n_table_capacity):
+Array<T>::Array(const size_t &n_block_capacity, const size_t &n_table_capacity):
     m_forward_list(n_table_capacity, n_block_capacity),
     m_backward_list(n_table_capacity, n_block_capacity),
     m_default_table_size(n_table_capacity){}
@@ -29,6 +29,13 @@ Array<T>::Array(const Array &other):
     m_forward_list(other.m_forward_list),
     m_backward_list(other.m_backward_list),
     m_default_table_size(other.m_default_table_size){}
+
+template <typename T>
+Array<T>::Array(std::istream_iterator<T> Begin, std::istream_iterator<T> End)
+{
+    while(Begin != End)
+        push_back(*Begin++);
+}
 
 template <typename T>
 Array<T> &Array<T>::operator=(const Array &other)
@@ -73,7 +80,7 @@ Array<T> &Array<T>::operator=(Array &&other)
 }
 
 template <typename T>
-T &Array<T>::operator[](size_t n)
+T &Array<T>::operator[](const size_t &n)
 {
     if(n < m_backward_list.size())
         return m_backward_list[m_backward_list.size() - n - 1];
@@ -82,7 +89,7 @@ T &Array<T>::operator[](size_t n)
 }
 
 template <typename T>
-void Array<T>::print_all(int command)
+void Array<T>::print_all(const int &command)
 {
     std::cout << "m_backward_list:" << std::endl;
     m_backward_list.print_all(command);
@@ -97,7 +104,7 @@ size_t Array<T>::size()
 }
 
 template <typename T>
-int Array<T>::push_front(T new_data)
+int Array<T>::push_front(const T &new_data)
 {
     return m_backward_list.push_back(new_data);
 }
@@ -115,7 +122,7 @@ int Array<T>::pop_front()
 }
 
 template <typename T>
-int Array<T>::erase(size_t N)
+int Array<T>::erase(const size_t &N)
 {
     if(N < m_backward_list.size())
         return m_backward_list.erase(m_backward_list.size() - N - 1);
@@ -124,21 +131,12 @@ int Array<T>::erase(size_t N)
 }
 
 template <typename T>
-int Array<T>::insert(size_t N, T new_data)
+int Array<T>::insert(const size_t &N, const T &new_data)
 {
     if(N < m_backward_list.size())
         return m_backward_list.insert(m_backward_list.size() - N - 1, new_data);
     else
         return m_forward_list.insert(N - m_backward_list.size(), new_data);
-}
-
-template <typename T>
-T Array<T>::get(size_t N) const 
-{
-    if(N < m_backward_list.size())
-        return m_backward_list.get(m_backward_list.size() - N - 1);
-    else
-        return m_forward_list.get(N - m_backward_list.size());
 }
 
 template <typename T>
@@ -153,8 +151,64 @@ Array<T> Array<T>::_compress(Array<T> old)
     Array<T> ret_array(old.m_default_table_size,
             old.m_forward_list.m_default_block_size);
     for(int i = 0 ; i < old.size(); ++i)
-        ret_array.push_back(old.get(i));
+        ret_array.push_back(old[i]);
     return ret_array;
+}
+
+template <typename T>
+typename Array<T>::iterator Array<T>::begin()
+{
+    return iterator(m_forward_list.m_table, m_forward_list.m_table_size,
+            m_backward_list.m_table, m_backward_list.m_table_size,
+            m_forward_list.m_size, m_backward_list.m_size, 0);   
+}
+
+template <typename T>
+typename Array<T>::iterator Array<T>::end()
+{
+    return iterator(m_forward_list.m_table, m_forward_list.m_table_size,
+            m_backward_list.m_table, m_backward_list.m_table_size,
+            m_forward_list.m_size, m_backward_list.m_size, size());   
+}
+
+template <typename T>
+typename Array<T>::const_iterator Array<T>::begin() const
+{
+    return const_iterator(m_forward_list.m_table, m_forward_list.m_table_size,
+            m_backward_list.m_table, m_backward_list.m_table_size,
+            m_forward_list.m_size, m_backward_list.m_size, 0);   
+}
+
+template <typename T>
+typename Array<T>::const_iterator Array<T>::end() const
+{
+    return const_iterator(m_forward_list.m_table, m_forward_list.m_table_size,
+            m_backward_list.m_table, m_backward_list.m_table_size,
+            m_forward_list.m_size, m_backward_list.m_size, size());   
+}
+
+template <typename T>
+typename Array<T>::reverse_iterator Array<T>::rbegin()
+{
+    return reverse_iterator(end());   
+}
+
+template <typename T>
+typename Array<T>::reverse_iterator Array<T>::rend()
+{
+    return reverse_iterator(begin());   
+}
+
+template <typename T>
+typename Array<T>::const_reverse_iterator Array<T>::rbegin() const
+{
+    return reverse_iterator(end());   
+}
+
+template <typename T>
+typename Array<T>::const_reverse_iterator Array<T>::rend() const
+{
+    return reverse_iterator(begin());   
 }
 
 #endif

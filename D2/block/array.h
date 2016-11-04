@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <cassert>
+#include <iterator>
 
 #define DEFAULT_LENGTH 100
 #define DEFAULT_RATIO 1.1
@@ -21,25 +22,27 @@ struct Array
     friend Array<T> _compress(Array<T>);
     public:
 
-        int push_back(T new_data);
-        int push_front(T new_data);
+        int push_back(const T & new_data);
+        int push_front(const T & new_data);
         size_t size();
-        T& operator[](size_t n);
+        T& operator[](const size_t &n);
+        T operator[](const size_t &n) const;
 
         ~Array() = default;
-        Array(size_t n_block_capacity = DEFAULT_LENGTH, 
-                size_t n_table_capacity = DEFAULT_TABLE_SIZE);
+        Array(const size_t &n_block_capacity = DEFAULT_LENGTH, 
+                const size_t &n_table_capacity = DEFAULT_TABLE_SIZE);
 
-        Array(size_t n_size, T* n_data);
+        Array(const size_t &n_size, const T* n_data);
+        Array(std::istream_iterator<T> Begin, std::istream_iterator<T> End);
         
-        void print_all(int command);
+        void print_all(const int &command);
 
         int pop_back();
         int pop_front();
         
-        int erase(size_t N);
+        int erase(const size_t &N);
 
-        int insert(size_t N, T new_data);
+        int insert(const size_t &N, const T &new_data);
 
         Array &operator=(const Array &other);
         Array(const Array &other);
@@ -50,6 +53,22 @@ struct Array
 
         struct Block;
         struct BlockList;
+        struct iterator;
+        struct const_iterator;
+        using reverse_iterator = std::reverse_iterator<iterator>;
+        using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
+        iterator begin();
+        iterator end();
+
+        const_iterator begin() const;
+        const_iterator end() const;
+
+        reverse_iterator rbegin();
+        reverse_iterator rend();
+
+        const_reverse_iterator rbegin() const;
+        const_reverse_iterator rend() const;
 
     private:
         
@@ -58,12 +77,12 @@ struct Array
         
         size_t m_default_table_size = DEFAULT_TABLE_SIZE;
 
-        T get(size_t N) const;
         Array<T> _compress(Array<T> old);
 };
 
 #include "array.cpp.h"
 #include "block.h"
 #include "blocklist.h"
+#include "iterator.h"
 
 #endif

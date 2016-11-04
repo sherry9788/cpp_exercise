@@ -17,7 +17,7 @@ Array<T>::Block::Block(const Block &other):
 {
     m_data = new T[m_capacity];
     for(int i = 0; i < m_size; ++i)
-        m_data[i] = other.get(i);
+        m_data[i] = other[i];
 }
 
 template <typename T>
@@ -29,7 +29,7 @@ typename Array<T>::Block &Array<T>::Block::operator=(const Block &other)
     m_size = other.m_size;
     m_data = new T[m_capacity];
     for(int i = 0; i < m_size; ++i)
-        m_data[i] = other.get(i);
+        m_data[i] = other[i];
 }
 
 template <typename T>
@@ -75,6 +75,13 @@ T &Array<T>::Block::operator[](size_t n)
 }
 
 template <typename T>
+T Array<T>::Block::operator[](size_t n) const
+{
+    assert(n <= m_size);
+    return m_data[n];
+}
+
+template <typename T>
 size_t Array<T>::Block::size()
 {
     return m_size;
@@ -108,13 +115,6 @@ void Array<T>::Block::insert(size_t N, T new_data)
         m_data[i] = m_data[i - 1];
     m_data[N] = new_data;
     ++m_size;
-}
-
-template <typename T>
-T Array<T>::Block::get(size_t N) const 
-{
-    assert(N >= 0 && N < m_size);
-    return m_data[N];
 }
 
 #endif

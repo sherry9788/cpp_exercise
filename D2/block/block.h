@@ -6,11 +6,13 @@
 template <typename T>
 struct Array<T>::Block
 {
+    friend struct Array<T>::iterator;
     public:
         Block(size_t n_capacity = DEFAULT_LENGTH);
         bool empty();
         void push_back(T new_data);
         T &operator[](size_t n);
+        T operator[](size_t n) const;
         size_t size();
         void pop_back();
         void print_all();
@@ -22,7 +24,6 @@ struct Array<T>::Block
         Block(const Block &other);
         Block(Block &&other) = default;
         Block &operator=(Block &&other);
-        T get(size_t N) const;
 
         static double m_ratio;
 
