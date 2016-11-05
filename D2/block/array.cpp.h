@@ -134,7 +134,7 @@ template <typename T>
 int Array<T>::insert(const size_t &N, const T &new_data)
 {
     if(N < m_backward_list.size())
-        return m_backward_list.insert(m_backward_list.size() - N - 1, new_data);
+        return m_backward_list.insert(m_backward_list.size() - N, new_data);
     else
         return m_forward_list.insert(N - m_backward_list.size(), new_data);
 }

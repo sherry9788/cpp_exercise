@@ -35,7 +35,7 @@ struct Array
         Array(const size_t &n_size, const T* n_data);
         Array(std::istream_iterator<T> Begin, std::istream_iterator<T> End);
         
-        void print_all(const int &command);
+        void print_all(const int &command = WITH_DATA);
 
         int pop_back();
         int pop_front();

@@ -8,16 +8,16 @@ struct Array<T>::Block
 {
     friend struct Array<T>::iterator;
     public:
-        Block(size_t n_capacity = DEFAULT_LENGTH);
+        Block(const size_t &n_capacity = DEFAULT_LENGTH);
         bool empty();
         void push_back(T new_data);
-        T &operator[](size_t n);
-        T operator[](size_t n) const;
+        T &operator[](const size_t &n);
+        T operator[](const size_t &n) const;
         size_t size();
         void pop_back();
         void print_all();
-        void erase(size_t N);
-        void insert(size_t N, T new_data);
+        void erase(const size_t &N);
+        void insert(const size_t &N, const T &new_data);
         ~Block();
 
         Block &operator=(const Block &other);

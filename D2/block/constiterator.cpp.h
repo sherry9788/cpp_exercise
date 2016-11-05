@@ -48,8 +48,8 @@ Array<T>::const_iterator::operator[](const size_t &N)
         size_t i = 0;
         while(pos >= m_b_table[i]->m_size)
         {
-            ++i;
             pos -= m_b_table[i]->m_size;
+            ++i;
         }
         return (*m_b_table[i])[pos];
     }
@@ -59,8 +59,8 @@ Array<T>::const_iterator::operator[](const size_t &N)
         size_t i = 0;
         while(pos >= m_f_table[i]->m_size)
         {
-            ++i;
             pos -= m_f_table[i]->m_size;
+            ++i;
         }
         return (*m_f_table[i])[pos];
     }
@@ -77,8 +77,8 @@ Array<T>::const_iterator::operator*()
         size_t i = 0;
         while(pos >= m_b_table[i]->m_size)
         {
-            ++i;
             pos -= m_b_table[i]->m_size;
+            ++i;
         }
         return (*m_b_table[i])[pos];
     }
@@ -88,8 +88,8 @@ Array<T>::const_iterator::operator*()
         size_t i = 0;
         while(pos >= m_f_table[i]->m_size)
         {
-            ++i;
             pos -= m_f_table[i]->m_size;
+            ++i;
         }
         return (*m_f_table[i])[pos];
     }
@@ -135,6 +135,15 @@ template <typename T>
 typename Array<T>::const_iterator Array<T>::const_iterator::operator+(const size_t &N)
 {
     assert(N + m_curr_pos <= m_b_size + m_f_size);
+    const_iterator ret(*this);
+    ret.m_curr_pos += N;
+    return ret;
+}
+
+template <typename T>
+typename Array<T>::const_iterator Array<T>::const_iterator::operator+=(const size_t &N)
+{
+    assert(N + m_curr_pos <= m_b_size + m_f_size);
     m_curr_pos += N;
     return *this;
 }
@@ -157,8 +166,8 @@ typename Array<T>::const_iterator::pointer Array<T>::const_iterator::operator->(
         size_t i = 0;
         while(pos >= m_b_table[i]->m_size)
         {
-            ++i;
             pos -= m_b_table[i]->m_size;
+            ++i;
         }
         return &(*m_b_table[i])[pos];
     }
@@ -168,8 +177,8 @@ typename Array<T>::const_iterator::pointer Array<T>::const_iterator::operator->(
         size_t i = 0;
         while(pos >= m_f_table[i]->m_size)
         {
-            ++i;
             pos -= m_f_table[i]->m_size;
+            ++i;
         }
         return &(*m_f_table[i])[pos];
     }

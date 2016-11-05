@@ -124,8 +124,9 @@ int Array<T>::BlockList::push_back(const T &new_data)
 }
 
 template <typename T>
-T &Array<T>::BlockList::operator[](const size_t &n)
+T &Array<T>::BlockList::operator[](const size_t &N)
 {
+    size_t n = N;
     assert(n <= size());
     int i = 0;
     while(n >= m_table[i]->size())
@@ -185,6 +186,11 @@ int Array<T>::BlockList::pop_back()
         delete m_table[m_table_size - 1];
         --m_size;
         --m_table_size;
+        if(m_table_size == 0)
+        {
+            m_table[0] = new Block(m_default_block_size);
+            ++m_table_size;
+        }
         return TABLE_CHANGED;
     }
     else
@@ -196,14 +202,15 @@ int Array<T>::BlockList::pop_back()
 }
 
 template <typename T>
-int Array<T>::BlockList::insert(const size_t &N, const T &new_data)
+int Array<T>::BlockList::insert(const size_t &n, const T &new_data)
 {
     ++m_size;
     int i = 0;
+    size_t N = n;
     while(N > m_table[i]->size())
     {
-        ++i;
         N -= m_table[i]->size();
+        ++i;
     }
 
     if(m_table[i]->empty())
@@ -225,17 +232,18 @@ int Array<T>::BlockList::insert(const size_t &N, const T &new_data)
 }
 
 template <typename T>
-int Array<T>::BlockList::erase(const size_t &N)
+int Array<T>::BlockList::erase(const size_t &n)
 {
+    size_t N = n;
     --m_size;
     int i = 0;
     while(N > m_table[i]->size())
     {
-        ++i;
         N -= m_table[i]->size();
+        ++i;
     }
 
-    if(N != 0)
+    if(m_table[i]->size() != 1)
     {
         m_table[i]->erase(N);
         return BLOCK_CHANGED;
@@ -243,9 +251,14 @@ int Array<T>::BlockList::erase(const size_t &N)
     else
     {
         delete m_table[i];
-        for(int i = i; i < m_table_size - 1; ++i)
-            m_table[i] = m_table[i + 1];
+        for(int j = i; j < m_table_size - 1; ++j)
+            m_table[j] = m_table[j + 1];
         --m_table_size;
+        if(m_table_size == 0)
+        {
+            m_table[0] = new Block(m_default_block_size);
+            ++m_table_size;
+        }
         return TABLE_CHANGED;
     }
 }

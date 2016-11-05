@@ -4,7 +4,7 @@
 #include "block.h"
 
 template <typename T>
-Array<T>::Block::Block(size_t n_capacity)
+Array<T>::Block::Block(const size_t &n_capacity)
 {
     m_size = 0;
     m_capacity = n_capacity;
@@ -68,14 +68,14 @@ void Array<T>::Block::push_back(T new_data)
 }
 
 template <typename T>
-T &Array<T>::Block::operator[](size_t n)
+T &Array<T>::Block::operator[](const size_t &n)
 {
     assert(n <= m_size);
     return m_data[n];
 }
 
 template <typename T>
-T Array<T>::Block::operator[](size_t n) const
+T Array<T>::Block::operator[](const size_t &n) const
 {
     assert(n <= m_size);
     return m_data[n];
@@ -101,7 +101,7 @@ void Array<T>::Block::pop_back()
 }
 
 template <typename T>
-void Array<T>::Block::erase(size_t N)
+void Array<T>::Block::erase(const size_t &N)
 {
     for(int i = N; i < m_size - 1; ++i)
         m_data[i] = m_data[i + 1];
@@ -109,9 +109,9 @@ void Array<T>::Block::erase(size_t N)
 }
 
 template <typename T>
-void Array<T>::Block::insert(size_t N, T new_data)
+void Array<T>::Block::insert(const size_t &N, const T &new_data)
 {
-    for(int i = m_size; i > N; --i)
+    for(size_t i = m_size; i > N; --i)
         m_data[i] = m_data[i - 1];
     m_data[N] = new_data;
     ++m_size;

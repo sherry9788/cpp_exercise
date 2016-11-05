@@ -41,6 +41,8 @@ struct Array<T>::iterator
 
         iterator operator-(const size_t &N);
         iterator operator+(const size_t &N);
+        iterator operator+=(const size_t &N);
+        iterator operator-=(const size_t &N);
 
         pointer operator->();
         

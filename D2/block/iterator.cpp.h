@@ -48,8 +48,8 @@ Array<T>::iterator::operator[](const size_t &N)
         size_t i = 0;
         while(pos >= m_b_table[i]->m_size)
         {
-            ++i;
             pos -= m_b_table[i]->m_size;
+            ++i;
         }
         return (*m_b_table[i])[pos];
     }
@@ -59,8 +59,8 @@ Array<T>::iterator::operator[](const size_t &N)
         size_t i = 0;
         while(pos >= m_f_table[i]->m_size)
         {
-            ++i;
             pos -= m_f_table[i]->m_size;
+            ++i;
         }
         return (*m_f_table[i])[pos];
     }
@@ -77,8 +77,8 @@ Array<T>::iterator::operator*()
         size_t i = 0;
         while(pos >= m_b_table[i]->m_size)
         {
-            ++i;
             pos -= m_b_table[i]->m_size;
+            ++i;
         }
         return (*m_b_table[i])[pos];
     }
@@ -88,8 +88,8 @@ Array<T>::iterator::operator*()
         size_t i = 0;
         while(pos >= m_f_table[i]->m_size)
         {
-            ++i;
             pos -= m_f_table[i]->m_size;
+            ++i;
         }
         return (*m_f_table[i])[pos];
     }
@@ -135,12 +135,31 @@ template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator+(const size_t &N)
 {
     assert(N + m_curr_pos <= m_b_size + m_f_size);
+    iterator ret(*this);
+    ret.m_curr_pos += N;
+    return ret;
+}
+
+template <typename T>
+typename Array<T>::iterator Array<T>::iterator::operator+=(const size_t &N)
+{
+    assert(N + m_curr_pos <= m_b_size + m_f_size);
     m_curr_pos += N;
     return *this;
 }
 
 template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator-(const size_t &N)
+{
+    assert(m_curr_pos - N >= 0);
+    m_curr_pos -= N;
+    iterator ret(*this);
+    ret.m_curr_pos -= N;
+    return ret;
+}
+
+template <typename T>
+typename Array<T>::iterator Array<T>::iterator::operator-=(const size_t &N)
 {
     assert(m_curr_pos - N >= 0);
     m_curr_pos -= N;
@@ -157,8 +176,8 @@ typename Array<T>::iterator::pointer Array<T>::iterator::operator->()
         size_t i = 0;
         while(pos >= m_b_table[i]->m_size)
         {
-            ++i;
             pos -= m_b_table[i]->m_size;
+            ++i;
         }
         return &(*m_b_table[i])[pos];
     }
@@ -168,8 +187,8 @@ typename Array<T>::iterator::pointer Array<T>::iterator::operator->()
         size_t i = 0;
         while(pos >= m_f_table[i]->m_size)
         {
-            ++i;
             pos -= m_f_table[i]->m_size;
+            ++i;
         }
         return &(*m_f_table[i])[pos];
     }
