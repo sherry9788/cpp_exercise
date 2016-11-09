@@ -1,20 +1,18 @@
 #include "block.h"
+
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 int main()
 {
-    std::ostream_iterator<int> out(std::cout, "\n");
-    Array<int> a(20, 20);
-    for(int i = 10; i < 40; ++i)
+    Array<int> a;
+    for(int i = 10; i >= 0; --i)
         a.push_back(i);
-    for(int i = 9; i > -1; --i)
-        a.push_front(i);
-    a.print_all();
-    std::cout << "------------------------------" << std::endl;
-    for(auto c = a.rbegin(); c != a.rend(); ++c)
-    {
-        *out = *c;
-    }
+
+    std::sort(a.begin(), a.end());
+    // std::sort(a.rbegin(), a.rend()); // 宝贝我咋通不过这个, 用begin和end就能通过
+
+    a.print_all(1);
     return 0;
 }

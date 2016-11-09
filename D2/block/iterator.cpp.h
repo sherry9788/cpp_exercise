@@ -70,6 +70,7 @@ template <typename T>
 typename Array<T>::iterator::reference
 Array<T>::iterator::operator*()
 {
+    assert(m_curr_pos >= 0 && m_curr_pos < m_b_size + m_f_size);
     size_t pos = m_curr_pos;
     if(pos < m_b_size)
     {
@@ -98,7 +99,6 @@ Array<T>::iterator::operator*()
 template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator++()
 {
-    assert(m_curr_pos <= m_b_size + m_f_size - 1);
     ++m_curr_pos;
     return *this;
 }
@@ -108,7 +108,6 @@ typename Array<T>::iterator Array<T>::iterator::operator++(int Nothing)
 {
     --Nothing;
     iterator ret = *this;
-    assert(m_curr_pos < m_b_size + m_f_size - 1);
     ++m_curr_pos;
     return ret;
 }
@@ -116,7 +115,6 @@ typename Array<T>::iterator Array<T>::iterator::operator++(int Nothing)
 template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator--()
 {
-    assert(m_curr_pos > 0);
     --m_curr_pos;
     return *this;
 }
@@ -126,7 +124,6 @@ typename Array<T>::iterator Array<T>::iterator::operator--(int Nothing)
 {
     --Nothing;
     iterator ret = *this;
-    assert(m_curr_pos > 0);
     --m_curr_pos;
     return ret;
 }
@@ -134,7 +131,6 @@ typename Array<T>::iterator Array<T>::iterator::operator--(int Nothing)
 template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator+(const size_t &N)
 {
-    assert(N + m_curr_pos <= m_b_size + m_f_size);
     iterator ret(*this);
     ret.m_curr_pos += N;
     return ret;
@@ -143,7 +139,6 @@ typename Array<T>::iterator Array<T>::iterator::operator+(const size_t &N)
 template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator+=(const size_t &N)
 {
-    assert(N + m_curr_pos <= m_b_size + m_f_size);
     m_curr_pos += N;
     return *this;
 }
@@ -151,8 +146,6 @@ typename Array<T>::iterator Array<T>::iterator::operator+=(const size_t &N)
 template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator-(const size_t &N)
 {
-    assert(m_curr_pos - N >= 0);
-    m_curr_pos -= N;
     iterator ret(*this);
     ret.m_curr_pos -= N;
     return ret;
@@ -161,7 +154,6 @@ typename Array<T>::iterator Array<T>::iterator::operator-(const size_t &N)
 template <typename T>
 typename Array<T>::iterator Array<T>::iterator::operator-=(const size_t &N)
 {
-    assert(m_curr_pos - N >= 0);
     m_curr_pos -= N;
     return *this;
 }
@@ -169,6 +161,7 @@ typename Array<T>::iterator Array<T>::iterator::operator-=(const size_t &N)
 template <typename T>
 typename Array<T>::iterator::pointer Array<T>::iterator::operator->()
 {
+    assert(m_curr_pos >= 0 && m_curr_pos < m_b_size + m_f_size);
     size_t pos = m_curr_pos;
     if(pos < m_b_size)
     {
