@@ -14,7 +14,7 @@ struct Array<T>::const_iterator
 {
     public:
         using value_type = T;
-        using difference_type = int;
+        using difference_type = size_t;
         using pointer = const T*;
         using reference = const T&;
         using iterator_category = std::random_access_iterator_tag;
@@ -32,15 +32,15 @@ struct Array<T>::const_iterator
         const_iterator &operator=(const_iterator &&other) = default;
 
         reference operator[](const size_t &N);
-        reference operator*();
+        reference operator*() const;
 
         const_iterator operator++();
         const_iterator operator++(int Nothing);
         const_iterator operator--();
         const_iterator operator--(int Nothing);
 
-        const_iterator operator-(const size_t &N);
-        const_iterator operator+(const size_t &N);
+        const_iterator operator-(const size_t &N) const;
+        const_iterator operator+(const size_t &N) const;
         const_iterator operator-=(const size_t &N);
         const_iterator operator+=(const size_t &N);
 

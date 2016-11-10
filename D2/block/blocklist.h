@@ -8,6 +8,7 @@ struct Array<T>::BlockList
 {
     friend class Array<T>;
     public:
+        
         using pBlock = Block*;
         size_t size() const;
         ~BlockList();

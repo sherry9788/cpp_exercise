@@ -68,7 +68,7 @@ Array<T>::iterator::operator[](const size_t &N)
 
 template <typename T>
 typename Array<T>::iterator::reference
-Array<T>::iterator::operator*()
+Array<T>::iterator::operator*() const
 {
     assert(m_curr_pos >= 0 && m_curr_pos < m_b_size + m_f_size);
     size_t pos = m_curr_pos;
@@ -129,7 +129,7 @@ typename Array<T>::iterator Array<T>::iterator::operator--(int Nothing)
 }
 
 template <typename T>
-typename Array<T>::iterator Array<T>::iterator::operator+(const size_t &N)
+typename Array<T>::iterator Array<T>::iterator::operator+(const size_t &N) const
 {
     iterator ret(*this);
     ret.m_curr_pos += N;
@@ -144,7 +144,7 @@ typename Array<T>::iterator Array<T>::iterator::operator+=(const size_t &N)
 }
 
 template <typename T>
-typename Array<T>::iterator Array<T>::iterator::operator-(const size_t &N)
+typename Array<T>::iterator Array<T>::iterator::operator-(const size_t &N) const
 {
     iterator ret(*this);
     ret.m_curr_pos -= N;
